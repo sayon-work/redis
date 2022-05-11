@@ -17,22 +17,22 @@ public class ProductRepositoryImpl implements ProductRepository {
     public static final String HASH_NAME = "Product";
 
     @Autowired
-    private final RedisTemplate template;
+    private final RedisTemplate redisTemplate;
 
     public Product save(Product product) {
-        template.opsForHash().put(HASH_NAME, product.getId(), product);
+        redisTemplate.opsForHash().put(HASH_NAME, product.getId(), product);
         return product;
     }
 
     public List<Product> findAll() {
-        return template.opsForHash().values(HASH_NAME);
+        return redisTemplate.opsForHash().values(HASH_NAME);
     }
 
     public Product findProductById (int id) {
-        return (Product) template.opsForHash().get(HASH_NAME, id);
+        return (Product) redisTemplate.opsForHash().get(HASH_NAME, id);
     }
 
     public void deleteProduct(int id) {
-        template.opsForHash().delete(HASH_NAME, id);
+        redisTemplate.opsForHash().delete(HASH_NAME, id);
     }
 }
